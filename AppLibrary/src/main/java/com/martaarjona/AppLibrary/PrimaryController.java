@@ -71,7 +71,7 @@ public class PrimaryController implements Initializable {
 
 	private ObservableList<UserDAO> users;
 	private ObservableList<UserDAO> filtrousers;
-	private ObservableList<Download> books;
+	private ObservableList<DownloadDAO> books;
 
 	/**
 	 * Inicializa la escena
@@ -150,7 +150,7 @@ public class PrimaryController implements Initializable {
 			stage.setScene(scene);
 			stage.showAndWait();
 
-			Download d = controlador.getDownload();
+			DownloadDAO d = (DownloadDAO) controlador.getDownload();
 			if (d != null) {
 				this.tblDownload.refresh();
 			}
@@ -238,6 +238,8 @@ public class PrimaryController implements Initializable {
 		} else {
 			this.users.remove(u);
 			u.delete();
+			ObservableList<UserDAO> items = u.getUsers();
+			this.tblUser.setItems(items);
 			this.tblUser.refresh();
 
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);

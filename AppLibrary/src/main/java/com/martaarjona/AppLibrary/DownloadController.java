@@ -36,8 +36,6 @@ public class DownloadController implements Initializable {
 	@FXML
 	private TextArea txtInfo;
 	@FXML
-	private TextField txtDate;
-	@FXML
 	private TextField txtDni;
 	@FXML
 	private TextField txtName;
@@ -109,7 +107,6 @@ public class DownloadController implements Initializable {
 	private void save(ActionEvent e) {
 
 		int id = Integer.parseInt(this.txtId.getText());
-		String date = this.txtDate.getText();
 		BookDAO b = cmbBook.getSelectionModel().getSelectedItem();
 		this.download = new DownloadDAO(id, b.getIsbn());
 		download.getDownload();
