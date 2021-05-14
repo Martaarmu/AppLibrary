@@ -9,6 +9,11 @@ import com.martaarjona.AppLibrary.utils.Connect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * 
+ * @author marta
+ *
+ */
 public class User {
 	
 	protected int id;

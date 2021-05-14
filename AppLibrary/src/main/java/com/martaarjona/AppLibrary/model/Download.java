@@ -4,29 +4,23 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/**
+ * 
+ * @author marta
+ *
+ */
 public class Download {
-	
+
 	protected int id_user;
 	protected int isbn_book;
-	protected String date;
-	
-	public Download(int id_user, int isbn_book, String date) {
-		this.id_user = id_user;
-		this.isbn_book = isbn_book;
-		this.date = date;
-	}
+
 	public Download(int id_user, int isbn_book) {
 		this.id_user = id_user;
 		this.isbn_book = isbn_book;
 	}
-	public Download(int isbn_book, String date) {
-		this.isbn_book = isbn_book;
-		this.date = date;
-	}
-	
-	
+
 	public Download() {
-		
+
 	}
 
 	public int getId_user() {
@@ -45,14 +39,6 @@ public class Download {
 		this.isbn_book = isbn_book;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -62,11 +48,6 @@ public class Download {
 		if (getClass() != obj.getClass())
 			return false;
 		Download other = (Download) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
 		if (id_user != other.id_user)
 			return false;
 		if (isbn_book != other.isbn_book)

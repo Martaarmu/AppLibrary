@@ -22,40 +22,45 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
+/**
+ * 
+ * @author marta
+ *
+ */
 public class DownloadController implements Initializable {
-	
+
 	@FXML
-    private ComboBox<BookDAO> cmbBook;
+	private ComboBox<BookDAO> cmbBook;
 	@FXML
 	private Button btnIniDownload;
 	@FXML
-    private TextArea txtInfo;
+	private TextArea txtInfo;
 	@FXML
 	private TextField txtDate;
-
 	@FXML
 	private TextField txtDni;
-
 	@FXML
-    private TextField txtName;
-
+	private TextField txtName;
 	@FXML
 	private TextField txtAddress;
 	@FXML
 	private TextField txtId;
-	
-	ObservableList<Download>downloads;
+
+	ObservableList<Download> downloads;
 	private ObservableList<UserDAO> users;
 	DownloadDAO download;
 	UserDAO user;
+	
+	/**
+	 * Inicializa la scena
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		downloads=FXCollections.observableArrayList();
-		
+
+		downloads = FXCollections.observableArrayList();
+
 		BookDAO b = new BookDAO();
-		ObservableList<BookDAO>items=b.getBooks();
+		ObservableList<BookDAO> items = b.getBooks();
 		cmbBook.getItems().addAll(items);
 		cmbBook.setConverter(new StringConverter<BookDAO>() {
 			@Override
@@ -69,52 +74,63 @@ public class DownloadController implements Initializable {
 				return null;
 			}
 		});
-		
 	}
 	
-	
-	@FXML
-	private void comboEvent(ActionEvent e) {
-		
-		txtInfo.setText(cmbBook.getSelectionModel().getSelectedItem().toString());
-		
-	}
-	
-	@FXML
-	private void save(ActionEvent e) {
-		
-		int id = Integer.parseInt(this.txtId.getText());
-		String date = this.txtDate.getText();
-		BookDAO b = cmbBook.getSelectionModel().getSelectedItem();
-		this.download = new DownloadDAO (id,b.getIsbn(),date);
-		download.getDownload();
-		downloads.add(download);
-			
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setHeaderText(null);
-		alert.setTitle("Info");
-		alert.setContentText("Se ha descargado conrrectamente");
-		alert.showAndWait();
-		
-		Stage stage = (Stage) this.btnIniDownload.getScene().getWindow();
-		stage.close();
-	}
-	
-
-	
-	public Download getDownload() {
-		// TODO Auto-generated method stub
-		return download;
-	}
-
-	
+	/**
+	 * Inicializa los atributos del usuario seleccionado
+	 * @param users
+	 * @param u
+	 */
 	public void iniAttributtes(ObservableList<UserDAO> users, UserDAO u) {
-		this.users=users;
-		this.user=u;
+		this.users = users;
+		this.user = u;
 		this.txtId.setText(u.getId() + "");
 		this.txtDni.setText(u.getDni());
 		this.txtName.setText(u.getName());
 		this.txtAddress.setText(u.getAddress());
 	}
 	
+	/**
+	 * Muestra información sobre el item señalado 
+	 * en el combobox
+	 * @param e
+	 */
+	@FXML
+	private void comboEvent(ActionEvent e) {
+
+		txtInfo.setText(cmbBook.getSelectionModel().getSelectedItem().toString());
+	}
+	
+	/**
+	 * Inserta en la tabla download un nuevo registro
+	 * @param e
+	 */
+	@FXML
+	private void save(ActionEvent e) {
+
+		int id = Integer.parseInt(this.txtId.getText());
+		String date = this.txtDate.getText();
+		BookDAO b = cmbBook.getSelectionModel().getSelectedItem();
+		this.download = new DownloadDAO(id, b.getIsbn());
+		download.getDownload();
+		downloads.add(download);
+
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setHeaderText(null);
+		alert.setTitle("Info");
+		alert.setContentText("Se ha descargado conrrectamente");
+		alert.showAndWait();
+
+		Stage stage = (Stage) this.btnIniDownload.getScene().getWindow();
+		stage.close();
+	}
+	
+	/**
+	 * Devuelve un download
+	 * @return
+	 */
+	public Download getDownload() {
+		// TODO Auto-generated method stub
+		return download;
+	}
 }

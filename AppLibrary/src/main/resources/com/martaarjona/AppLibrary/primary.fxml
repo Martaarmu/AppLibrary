@@ -6,10 +6,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#filtrarNombre" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.martaarjona.AppLibrary.PrimaryController">
    <children>
-      <Button fx:id="btnAdd" layoutX="26.0" layoutY="350.0" mnemonicParsing="false" onAction="#addUser" text="Agregar usuario" />
+      <Button fx:id="btnAdd" layoutX="18.0" layoutY="350.0" mnemonicParsing="false" onAction="#addUser" text="Agregar usuario" />
       <TableView fx:id="tblUser" layoutX="20.0" layoutY="125.0" onMouseClicked="#seleccionar" prefHeight="214.0" prefWidth="325.0">
         <columns>
             <TableColumn fx:id="colId" prefWidth="39.33331298828125" text="Id" />
@@ -18,16 +19,20 @@
             <TableColumn fx:id="colAddress" prefWidth="145.3333740234375" text="Dirección" />
         </columns>
       </TableView>
-      <Button fx:id="btnModificar" layoutX="256.0" layoutY="350.0" mnemonicParsing="false" onAction="#modificar" text="Modificar usuario" />
-      <Button fx:id="btnBorrar" layoutX="534.0" layoutY="350.0" mnemonicParsing="false" onAction="#delete" text="Borrar " />
-      <Label layoutX="40.0" layoutY="28.0" text="Filtrar por nombre" />
-      <TextField fx:id="txtFiltrarNombre" layoutX="153.0" layoutY="24.0" onKeyReleased="#filtrarNombre" prefHeight="25.0" prefWidth="428.0" />
+      <Button fx:id="btnModificar" layoutX="236.0" layoutY="350.0" mnemonicParsing="false" onAction="#modificar" text="Modificar usuario" />
+      <Button fx:id="btnBorrar" layoutX="513.0" layoutY="350.0" mnemonicParsing="false" onAction="#delete" text="Borrar " />
+      <Label layoutX="20.0" layoutY="83.0" text="Filtrar por nombre" />
+      <TextField fx:id="txtFiltrarNombre" layoutX="137.0" layoutY="79.0" onKeyReleased="#filtrarNombre" prefHeight="25.0" prefWidth="428.0" />
       <TableView fx:id="tblDownload" layoutX="365.0" layoutY="125.0" prefHeight="214.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="colDownload" prefWidth="96.00006103515625" text="Descargas" />
-            <TableColumn fx:id="colDate" prefWidth="102.6666259765625" text="Fecha" />
+          <TableColumn fx:id="colDownload" prefWidth="198.66668701171875" text="Descargas" />
         </columns>
       </TableView>
-      <Button fx:id="btnDownload" layoutX="390.0" layoutY="350.0" mnemonicParsing="false" onAction="#addDownload" text="Descargar" />
+      <Button fx:id="btnDownload" layoutX="365.0" layoutY="350.0" mnemonicParsing="false" onAction="#addDownload" text="Descargar" />
+      <Label layoutX="164.0" layoutY="14.0" text="BIBLIOTECA">
+         <font>
+            <Font name="Bauhaus 93" size="48.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

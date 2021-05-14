@@ -35,8 +35,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class PrimaryController implements Initializable{
-	
+/**
+ * 
+ * @author marta
+ *
+ */
+public class PrimaryController implements Initializable {
+
 	@FXML
 	private Button btnAdd;
 	@FXML
@@ -52,40 +57,47 @@ public class PrimaryController implements Initializable{
 	@FXML
 	private TableView<Download> tblDownload;
 	@FXML
-	private TableColumn<UserDAO,String> colName;
+	private TableColumn<UserDAO, String> colName;
 	@FXML
-	private TableColumn<UserDAO,String> colDni;
+	private TableColumn<UserDAO, String> colDni;
 	@FXML
-	private TableColumn<UserDAO,String> colAddress;
+	private TableColumn<UserDAO, String> colAddress;
 	@FXML
-	private TableColumn<UserDAO,Integer> colId;
+	private TableColumn<UserDAO, Integer> colId;
 	@FXML
-	private TableColumn<Download,Integer> colDownload;
+	private TableColumn<Download, Integer> colDownload;
 	@FXML
-	private TableColumn<Download,String> colDate;
-	
+	private TableColumn<Download, String> colDate;
+
 	private ObservableList<UserDAO> users;
 	private ObservableList<UserDAO> filtrousers;
 	private ObservableList<Download> books;
-	
+
+	/**
+	 * Inicializa la escena
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
+
 		users = FXCollections.observableArrayList();
 		filtrousers = FXCollections.observableArrayList();
 		this.tblUser.setItems(users);
-		
+
 		this.colName.setCellValueFactory(new PropertyValueFactory("name"));
 		this.colDni.setCellValueFactory(new PropertyValueFactory("dni"));
 		this.colAddress.setCellValueFactory(new PropertyValueFactory("address"));
 		this.colId.setCellValueFactory(new PropertyValueFactory("id"));
-		
+
 		UserDAO u = new UserDAO();
-		ObservableList<UserDAO> items=u.getUsers();
+		ObservableList<UserDAO> items = u.getUsers();
 		this.tblUser.setItems(items);
 	}
 	
-	
+	/**
+	 * Método que abre otra ventana para insertar
+	 * un nuevo usuario
+	 * @param event
+	 */
 	@FXML
 	private void addUser(ActionEvent event) {
 
@@ -94,123 +106,140 @@ public class PrimaryController implements Initializable{
 			Parent root = loader.load();
 			SecondaryController controlador = loader.getController();
 			controlador.iniAttributtes(users);
-			
+
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setScene(scene);
 			stage.showAndWait();
-			
+
 			UserDAO u = controlador.getUser();
 			
-			if(u!=null) {
+			if (u != null) {
 				this.users.add(u);
+				ObservableList<UserDAO> items = u.getUsers();
+				this.tblUser.setItems(items);
 				this.tblUser.refresh();
 			}
-		
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Método que abre otra ventana para iniciar
+	 * la descarga de un libro
+	 * @param event
+	 */
 	@FXML
 	private void addDownload(ActionEvent event) {
 
 		try {
 			UserDAO u = this.tblUser.getSelectionModel().getSelectedItem();
-			
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("download.fxml"));
 			Parent root = loader.load();
 			DownloadController controlador = loader.getController();
-			controlador.iniAttributtes(users,u);
-			
+			controlador.iniAttributtes(users, u);
+
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setScene(scene);
 			stage.showAndWait();
-			
+
 			Download d = controlador.getDownload();
-			if(d!=null) {
+			if (d != null) {
 				this.tblDownload.refresh();
 			}
-		
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Método que nos permite seleccionar un item
+	 * @param event
+	 */
 	@FXML
 	private void seleccionar(MouseEvent event) {
-		
+
 		UserDAO u = this.tblUser.getSelectionModel().getSelectedItem();
 		books = FXCollections.observableArrayList();
 		this.tblDownload.setItems(u.getDownloadByID(u.getId()));
 		this.colDownload.setCellValueFactory(new PropertyValueFactory("isbn_book"));
-		this.colDate.setCellValueFactory(new PropertyValueFactory("date"));
-		
-		ObservableList<Download> items=u.getDownloadByID(u.getId());
+
+		ObservableList<Download> items = u.getDownloadByID(u.getId());
 		this.tblDownload.setItems(items);
-		
+
 	}
 	
+	/**
+	 * Abre otra ventana para proceder a la modificación de datos
+	 * @param event
+	 */
 	@FXML
 	private void modificar(ActionEvent event) {
-		
+
 		User u = this.tblUser.getSelectionModel().getSelectedItem();
-		
-		if(u==null) {
+
+		if (u == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
 			alert.setTitle("Error");
 			alert.setContentText("Debe seleccionar un usuario");
 			alert.showAndWait();
-		}else {
+		} else {
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
 				Parent root = loader.load();
 				SecondaryController controlador = loader.getController();
 				controlador.iniAttributtes(users, (UserDAO) u);
-				
+
 				Scene scene = new Scene(root);
 				Stage stage = new Stage();
 				stage.initModality(Modality.APPLICATION_MODAL);
 				stage.setScene(scene);
 				stage.showAndWait();
-				
+
 				User aux = controlador.getUser();
-				if(aux!=null) {
+				if (aux != null) {
 					this.tblUser.refresh();
 				}
-				
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
-		
+
 	}
-	
+
+	/**
+	 * Borra el usuario seleccionado
+	 * @param event
+	 */
+
 	@FXML
 	private void delete(ActionEvent event) {
 		UserDAO u = this.tblUser.getSelectionModel().getSelectedItem();
-		
-		if(u==null) {
+
+		if (u == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
 			alert.setTitle("Error");
 			alert.setContentText("Debe seleccionar un usuario");
 			alert.showAndWait();
-		}else {
+		} else {
 			this.users.remove(u);
 			u.delete();
 			this.tblUser.refresh();
-			
+
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setHeaderText(null);
 			alert.setTitle("Info");
@@ -219,23 +248,27 @@ public class PrimaryController implements Initializable{
 		}
 	}
 	
+	/**
+	 * Filtra los usuarios por nombre
+	 * @param event
+	 */
 	@FXML
 	private void filtrarNombre(KeyEvent event) {
 		String filtroName = this.txtFiltrarNombre.getText();
 		UserDAO u = new UserDAO();
-		ObservableList<UserDAO> items=u.getUsers();
+		ObservableList<UserDAO> items = u.getUsers();
 		this.tblUser.setItems(items);
-		if(filtroName.isEmpty()) {
+		if (filtroName.isEmpty()) {
 			this.tblUser.setItems(items);
-		}else {
+		} else {
 			this.filtrousers.clear();
-			for(UserDAO aux:items) {
-				if(aux.getName().toLowerCase().contains(filtroName.toLowerCase())) {
+			for (UserDAO aux : items) {
+				if (aux.getName().toLowerCase().contains(filtroName.toLowerCase())) {
 					this.filtrousers.add(aux);
 				}
 			}
 			this.tblUser.setItems(filtrousers);
 		}
 	}
-	
+
 }

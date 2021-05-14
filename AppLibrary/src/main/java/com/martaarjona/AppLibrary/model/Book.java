@@ -2,7 +2,11 @@ package com.martaarjona.AppLibrary.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * @author marta
+ *
+ */
 public class Book {
 	
 	protected int isbn;
@@ -70,10 +74,6 @@ public class Book {
 	public void setDownloads(List<User> downloads) {
 		this.downloads = downloads;
 	}
-	
-	
-	
-	
 
 	@Override
 	public String toString() {

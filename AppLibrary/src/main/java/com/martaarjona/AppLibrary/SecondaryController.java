@@ -19,7 +19,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import com.martaarjona.AppLibrary.utils.*;
 
+/**
+ * 
+ * @author marta
+ *
+ */
 public class SecondaryController {
 	
 	@FXML
@@ -36,9 +42,19 @@ public class SecondaryController {
 	private UserDAO user;
 	private ObservableList<UserDAO> users;
 	
+	/**
+	 * Inicializa la escena
+	 * @param users
+	 */
 	public void iniAttributtes(ObservableList<UserDAO> users) {
 		this.users=users;
 	}
+	
+	/**
+	 * Inicializa los atributos de la escena
+	 * @param users
+	 * @param u
+	 */
 	
 	public void iniAttributtes(ObservableList<UserDAO> users, UserDAO u) {
 		this.users=users;
@@ -48,6 +64,10 @@ public class SecondaryController {
 		this.txtAddress.setText(u.getAddress());
 	}
 	
+	/**
+	 * Inserta o modifica en la BD un usuario
+	 * @param event
+	 */
 	@FXML
 	private void save (ActionEvent event) {
 		
@@ -61,7 +81,6 @@ public class SecondaryController {
 			
 			//Modificando
 			if(this.user!=null) {
-				this.user.setDni(dni);
 				this.user.setName(name);
 				this.user.setAddress(address);
 				u.update();
@@ -96,6 +115,10 @@ public class SecondaryController {
 		}
 	}
 	
+	/**
+	 * Cierra la escena
+	 * @param event
+	 */
 	@FXML
 	private void exit (ActionEvent event) {
 		this.user=null;
@@ -103,6 +126,10 @@ public class SecondaryController {
 		stage.close();
 	}
 	
+	/**
+	 * Devuelve un usuario
+	 * @return
+	 */
 	public UserDAO getUser() {
 		return user;
 	}
