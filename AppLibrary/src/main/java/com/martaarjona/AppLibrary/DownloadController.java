@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.martaarjona.AppLibrary.model.Book;
 import com.martaarjona.AppLibrary.model.BookDAO;
-import com.martaarjona.AppLibrary.model.Download;
-import com.martaarjona.AppLibrary.model.DownloadDAO;
 import com.martaarjona.AppLibrary.model.User;
 import com.martaarjona.AppLibrary.model.UserDAO;
 
@@ -44,10 +43,10 @@ public class DownloadController implements Initializable {
 	@FXML
 	private TextField txtId;
 
-	ObservableList<Download> downloads;
+	ObservableList<Book> downloads;
 	private ObservableList<UserDAO> users;
-	DownloadDAO download;
 	UserDAO user;
+	BookDAO book;
 	
 	/**
 	 * Inicializa la scena
@@ -108,9 +107,11 @@ public class DownloadController implements Initializable {
 
 		int id = Integer.parseInt(this.txtId.getText());
 		BookDAO b = cmbBook.getSelectionModel().getSelectedItem();
-		this.download = new DownloadDAO(id, b.getIsbn());
-		download.getDownload();
-		downloads.add(download);
+		b = new BookDAO(b.getIsbn(),b.getTitle(),b.getAuthor(),b.getEditorial());
+		//book.getBooks();
+		
+		downloads.add(b);
+		user.getDownload(id,b.getIsbn());
 
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setHeaderText(null);
@@ -126,8 +127,8 @@ public class DownloadController implements Initializable {
 	 * Devuelve un download
 	 * @return
 	 */
-	public Download getDownload() {
+	public Book getDownload() {
 		// TODO Auto-generated method stub
-		return download;
+		return book;
 	}
 }

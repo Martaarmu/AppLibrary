@@ -23,17 +23,19 @@ public class UserDAO extends User {
 	private final static String GETBYID = "SELECT id,dni,name,address FROM user WHERE id=";
 	private final static String INSERT = "INSERT INTO user (dni,name,address) " + "VALUES (?,?,?)";
 	private final static String UPDATE = "UPDATE user SET name=?, address=? WHERE dni=?";
-	private final static String DELETE = "DELETE FROM user WHERE dni=?";
+	private final static String DELETE = "DELETE FROM user WHERE id=?";
 	private final static String GETBYUSER = "SELECT * FROM user, download, book WHERE "
 			+ "user.id=download.id_user AND book.isbn=download.isbn_book AND user.id=?";
 	private final static String USERS = "SELECT * FROM user";
-	private final static String GETDOWNLOAD = "INSERT INTO download (id_user,isbn_book,date) VALUES (?,?)";
+	private final static String GETDOWNLOAD = "INSERT INTO download (id_user,isbn_book) VALUES (?,?)";
+	private final static String  INSERTINTODOWNLOAD= "INSERT INTO download (id_user,isbn_book) VALUES (?,?)";
+	
 
 	public UserDAO(int id, String dni, String name, String address) {
 		super(id, dni, name, address);
 	}
 
-	public UserDAO(int id, String dni, String name, String address, List<Download> mydownload) {
+	public UserDAO(int id, String dni, String name, String address, List<Book> mydownload) {
 		super(id, dni, name, address, mydownload);
 	}
 
@@ -97,6 +99,22 @@ public class UserDAO extends User {
 		}
 		return rs;
 	}
+	public int saveInDownload(Book b) {
+		int rs = 0;
+		Connection con = Connect.getConnect();
+		if (con != null) {
+			try {
+				PreparedStatement q = con.prepareStatement(INSERTINTODOWNLOAD);
+				q.setString(1, this.dni);
+				q.setInt(2, b.getIsbn());
+				rs = q.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rs;
+	}
 
 	/**
 	 * Actualiza en la BD los datos de un usuario
@@ -127,8 +145,8 @@ public class UserDAO extends User {
 	 * @param id
 	 * @return lista de descargas
 	 */
-	public static ObservableList<Download> getDownloadByID(int id) {
-		ObservableList<Download> descargas = FXCollections.observableArrayList();
+	public static ObservableList<Book> getDownloadByID(int id) {
+		ObservableList<Book> descargas = FXCollections.observableArrayList();
 		Connection con = Connect.getConnect();
 		if (con != null) {
 			try {
@@ -138,22 +156,18 @@ public class UserDAO extends User {
 				while (rs.next()) {
 					// cada row
 					User u = new User();
-					u.setId(rs.getInt("id_user"));
+					u.setId(rs.getInt("id"));
 					u.setDni(rs.getString("dni"));
 					u.setName(rs.getString("name"));
 					u.setAddress(rs.getString("address"));
 
 					Book b = new Book();
-					b.setIsbn(rs.getInt("isbn_book"));
+					b.setIsbn(rs.getInt("isbn"));
 					b.setAuthor(rs.getString("author"));
 					b.setTitle(rs.getString("title"));
 					b.setEditorial(rs.getString("editorial"));
 
-					Download d = new Download();
-					d.setId_user(rs.getInt("id_user"));
-					d.setIsbn_book(rs.getInt("isbn_book"));
-
-					descargas.add(d);
+					descargas.add(b);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -174,7 +188,7 @@ public class UserDAO extends User {
 		if (con != null) {
 			try {
 				PreparedStatement q = con.prepareStatement(DELETE);
-				q.setString(1, this.dni);
+				q.setInt(1, this.id);
 				rs = q.executeUpdate();
 				this.id = -1;
 				this.dni = "";
@@ -193,15 +207,15 @@ public class UserDAO extends User {
 	 * 
 	 * @return
 	 */
-	public int getDownload() {
+	public int getDownload(int id, int isbn) {
 		int rs = 0;
 		Connection con = Connect.getConnect();
 		if (con != null) {
 			try {
 				PreparedStatement q = con.prepareStatement(GETDOWNLOAD);
-				BookDAO b = new BookDAO();
-				q.setInt(1, this.id);
-				q.setInt(2, b.getIsbn());
+				
+				q.setInt(1, id);
+				q.setInt(2, isbn);
 				rs = q.executeUpdate();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

@@ -20,9 +20,9 @@ public class User {
 	protected String dni;
 	protected String name;
 	protected String address;
-	protected List<Download> mydownload;
+	protected List<Book> mydownload;
 	
-	public User(int id, String dni, String name, String address, List<Download> mydownload) {
+	public User(int id, String dni, String name, String address, List<Book> mydownload) {
 		this.id = id;
 		this.dni = dni;
 		this.name = name;
@@ -44,7 +44,7 @@ public class User {
 	}
 	
 	public User() {
-		this(-1,"","","",new ArrayList<Download>());
+		this(-1,"","","",new ArrayList<Book>());
 	}
 
 	public int getId() {
@@ -79,11 +79,11 @@ public class User {
 		this.address = address;
 	}
 
-	public List<Download> getMybooks() {
+	public List<Book> getMybooks() {
 		return mydownload;
 	}
 
-	public void setMybooks(List<Download> mydownload) {
+	public void setMybooks(List<Book> mydownload) {
 		this.mydownload = mydownload;
 	}
 	
@@ -105,14 +105,7 @@ public class User {
 			return false;
 		return true;
 	}
-	/*
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", dni=" + dni + ", name=" + name + ", address=" + address + ", mydownload=" + mydownload
-				+ "]";
-	}
-	*/
-
+	
 	@Override
 	public String toString() {
 		return name ;

@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 
 import com.martaarjona.AppLibrary.model.Book;
 import com.martaarjona.AppLibrary.model.BookDAO;
-import com.martaarjona.AppLibrary.model.Download;
-import com.martaarjona.AppLibrary.model.DownloadDAO;
 import com.martaarjona.AppLibrary.model.User;
 import com.martaarjona.AppLibrary.model.UserDAO;
 
@@ -55,7 +53,7 @@ public class PrimaryController implements Initializable {
 	@FXML
 	private TableView<UserDAO> tblUser;
 	@FXML
-	private TableView<Download> tblDownload;
+	private TableView<Book> tblDownload;
 	@FXML
 	private TableColumn<UserDAO, String> colName;
 	@FXML
@@ -65,13 +63,11 @@ public class PrimaryController implements Initializable {
 	@FXML
 	private TableColumn<UserDAO, Integer> colId;
 	@FXML
-	private TableColumn<Download, Integer> colDownload;
-	@FXML
-	private TableColumn<Download, String> colDate;
+	private TableColumn<BookDAO, Integer> colDownload;
 
 	private ObservableList<UserDAO> users;
 	private ObservableList<UserDAO> filtrousers;
-	private ObservableList<DownloadDAO> books;
+	private ObservableList<BookDAO> books;
 
 	/**
 	 * Inicializa la escena
@@ -150,8 +146,8 @@ public class PrimaryController implements Initializable {
 			stage.setScene(scene);
 			stage.showAndWait();
 
-			DownloadDAO d = (DownloadDAO) controlador.getDownload();
-			if (d != null) {
+			BookDAO b = (BookDAO) controlador.getDownload();
+			if (b != null) {
 				this.tblDownload.refresh();
 			}
 
@@ -171,9 +167,9 @@ public class PrimaryController implements Initializable {
 		UserDAO u = this.tblUser.getSelectionModel().getSelectedItem();
 		books = FXCollections.observableArrayList();
 		this.tblDownload.setItems(u.getDownloadByID(u.getId()));
-		this.colDownload.setCellValueFactory(new PropertyValueFactory("isbn_book"));
+		this.colDownload.setCellValueFactory(new PropertyValueFactory("isbn"));
 
-		ObservableList<Download> items = u.getDownloadByID(u.getId());
+		ObservableList<Book> items = u.getDownloadByID(u.getId());
 		this.tblDownload.setItems(items);
 
 	}
